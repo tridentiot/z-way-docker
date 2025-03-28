@@ -20,10 +20,11 @@ RUN distro=$(lsb_release -a 2>/dev/null | grep Codename | awk '{print $2}') && \
     distro_id=$(lsb_release -a 2>/dev/null | grep "Distributor ID" | awk '{print $3}' | tr '[:upper:]' '[:lower:]') && \
     architecture=$(uname -m) && \
     if [ "$architecture" == "aarch64" ]; then arch_tag="[arch=armhf]"; arch_apt=":armhf"; dpkg --add-architecture armhf && apt-get update; fi && \
+    if [ "$architecture" == "aarch64" -o "$architecture" == "armhf" ]; then zbw_distro_id="raspbian"; else zbw_distro_id="${distro_id}"; fi && \
     wget "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x79006366B9B20A6B4D7E1C27AD242992ACAB4528" -O /etc/apt/trusted.gpg.d/tridentiot.asc && \
     wget "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbc04cd36834c6ad41c8b9eb15b2f88a91611e683" -O /etc/apt/trusted.gpg.d/z-wave-me.asc && \
     echo "deb ${arch_tag} https://tridentiot.github.io/apt-repository/${distro_id} ${distro} main" >/etc/apt/sources.list.d/tridentiot.list && \
-    echo "deb ${arch_tag} https://repo.z-wave.me/z-way/${distro_id} ${distro} main" >/etc/apt/sources.list.d/z-wave-me.list && \
+    echo "deb ${arch_tag} https://repo.z-wave.me/z-way/${zbw_distro_id} ${distro} main" >/etc/apt/sources.list.d/z-wave-me.list && \
     apt-get update -y && \
     apt-get install -y z-way-server${arch_apt} zbw && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
