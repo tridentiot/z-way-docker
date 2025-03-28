@@ -26,7 +26,7 @@ RUN distro=$(lsb_release -a 2>/dev/null | grep Codename | awk '{print $2}') && \
     echo "deb ${arch_tag} https://tridentiot.github.io/apt-repository/${distro_id} ${distro} main" >/etc/apt/sources.list.d/tridentiot.list && \
     echo "deb ${arch_tag} https://repo.z-wave.me/z-way/${zbw_distro_id} ${distro} main" >/etc/apt/sources.list.d/z-wave-me.list && \
     apt-get update -y && \
-    apt-get install -y z-way-server${arch_apt} zbw && \
+    apt-get install -y z-way-server${arch_apt} zbw${arch_apt} && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN rm -f /opt/z-way-server/automation/storage/*
