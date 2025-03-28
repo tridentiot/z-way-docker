@@ -27,7 +27,6 @@ jobs:
         arch:
           - amd64
           - armhf
-          - aarch64
 
     steps:
       - name: Checkout repository
