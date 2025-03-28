@@ -27,7 +27,6 @@ RUN distro=$(lsb_release -a 2>/dev/null | grep Codename | awk '{print $2}') && \
     wget "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbc04cd36834c6ad41c8b9eb15b2f88a91611e683" -O /etc/apt/trusted.gpg.d/z-wave-me.asc && \
     echo "deb ${arch_tag} https://tridentiot.github.io/apt-repository/${distro_id} ${distro} main" >/etc/apt/sources.list.d/tridentiot.list && \
     echo "deb ${arch_tag} https://repo.z-wave.me/z-way/${zbw_distro_id} ${distro} main" >/etc/apt/sources.list.d/z-wave-me.list && \
-    cat /etc/apt/sources.list.d/* && echo "%%%%%%%%%%%%%%%%%%%%%%%" z-way-server${arch_apt} zbw${arch_apt} $architecture $zbw_distro_id && \
     apt-get update -y && \
     apt-get install -y z-way-server${arch_apt} zbw${arch_apt} && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
