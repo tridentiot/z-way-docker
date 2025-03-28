@@ -22,6 +22,7 @@ jobs:
       packages: write
     strategy:
       matrix:
+        distrib:
           - debian-bookworm
         arch:
           - amd64
