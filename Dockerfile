@@ -4,6 +4,8 @@ WORKDIR /opt/z-way-server
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+SHELL ["/bin/bash", "-c"]
+
 # Block zbw key request
 RUN mkdir -p /etc/zbw/flags && touch /etc/zbw/flags/no_connection
 
