@@ -2,7 +2,7 @@
 
 This Docker container will run the latest Z-Way - the Smart Home controller software by Trident IoT.
 
-> **_NOTE:_**  Please note that running Z-Way in Docker on MacOS or Windows is NOT supported, due to  Docker on Mac OS and on Windows not supporting passing USB from host to Docker container. On Windows use WSL instead.
+> **_NOTE:_**  Please note that accessing Z-Wave and Zigbee hardware by Z-Way in Docker on MacOS or Windows is not possible, due to Docker on MacOS and on Windows not supporting passing USB from host to Docker container. On Windows use Z-Way in WSL instead.
 
 It is possible to use a Unix socket or a TCP socket instead of accessing the hardware directly. Consult [Z-Way Documentation](https://tridentiot.github.io/z-way-developer-documentation/#RUNNING_Z_WAVE_SERIAL_API_OVER_TCP) for more information.
 
