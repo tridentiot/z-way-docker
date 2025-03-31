@@ -1,17 +1,40 @@
 # Docker container for Z-Way
 
-This Docker container will run the latest [Z-Way](https://z-wave.me/z-way/) - the Smart Home controller software by Z-Wave.Me.
+This Docker container will run the latest Z-Way - the Smart Home controller software by Trident IoT.
 
-## Getting Started
+> **_NOTE:_**  Please note that accessing Z-Wave and Zigbee hardware by Z-Way in Docker on MacOS or Windows is not possible, due to Docker on MacOS and on Windows not supporting passing USB from host to Docker container. On Windows use Z-Way in WSL instead.
 
-1. Clone this repository to your local machine:
+It is possible to use a Unix socket or a TCP socket instead of accessing the hardware directly. Consult [Z-Way Documentation](https://tridentiot.github.io/z-way-developer-documentation/#RUNNING_Z_WAVE_SERIAL_API_OVER_TCP) for more information.
+
+## Getting running the container
 
     ```sh
-    git clone https://github.com/Z-Wave-Me/docker-z-way.git
-    cd docker-z-way
+    docker run -it -p 8083 -v /data:/data --device /dev/ttyUSB0:/dev/ttyUSB0 ghcr.io/tridentiot/z-way-docker-debian-bookworm-amd64:main /opt/z-way-server/run.sh
     ```
 
-2. Check which ports your Z-Wave and Zigbee interfaces are on:
+Use `armhf` or `aarch64` instead of `amd64` for Raspberry Pi (Armhf) platforms.
+
+Change `/dev/ttyUSB0` to `/dev/ttyAMA0` in the line above and in `Apps > Active Apps > Z-Wave Network Access > Serial port` if you are using an UART shield connected to Raspberry Pi UART pins.
+
+All your files will be stored in the /data folder of your host.
+
+## Building the container yourself
+
+    ```sh
+    git clone https://github.com/tridentiot/z-way-docker.git
+    cd z-way-docker
+    docker build --platform linux/amd64 -t z-way-docker:latest .
+    docker run -it -p 8083 -v /data:/data --device /dev/ttyUSB0:/dev/ttyUSB0 --platform linux/amd64 z-way-docker:latest /opt/z-way-server/run.sh
+    ```
+
+> **_NOTE:_**  To access the hardware (/dev/tty*) and /data folder on Linux one might need to add `sudo` to the `docker run` command.
+
+Use `linux/armhf` instead of `linux/amd64` for Raspberry Pi (Armhf) platforms.
+
+
+## Setting up ports for your Z-Wave and Zigbee interfaces
+
+You can find the right port using the following command:
 
     - **Linux**:
 
@@ -30,35 +53,5 @@ This Docker container will run the latest [Z-Way](https://z-wave.me/z-way/) - th
         ```sh
         ls /dev/cua*
         ```
-
-3. Update the `docker-compose.yml` file with the correct device paths if necessary.
-
-4. Build and start the container:
-
-    ```sh
-    docker compose build
-    docker compose up
-    ```
-
-This server works only with controllers from Z-Wave.Me, such as RaZberry 2/5/7/[Pro](https://z-wave.me/products/razberry/), [mPCIe module](https://z-wave.me/products/mpcie/), UZB, and [Z-Station](https://z-wave.me/products/z-station/).
-
-## Running on Raspberry Pi
-
-On Raspberry Pi, build the docker container:
-
-    ```sh
-    sudo apt-get install git
-    git clone https://github.com/Z-Wave-Me/docker-z-way
-    sudo docker build -t z-way-container .
-    sudo mkdir /data
-    ```
-
-Run the container:
-
-    ```sh
-    sudo docker run -p 8083 -v /data:/data --device /dev/ttyUSB0:/dev/ttyUSB0 -it z-way-container /opt/z-way-server/run.sh
-    ```
-
-Change `/dev/ttyUSB0` to `/dev/ttyAMA0` in the line above and in `Apps > Active Apps > Z-Wave Network Access > Serial port` if you are using RaZberry 7 Pro or other board connected to Raspberry Pi UART pins.
-
-All your files will be stored in the /data folder of your host.
+Use `--device` multiple time if you need to pass two or more devices to the docker.
+For example: `--device /dev/ttyUSB0:/dev/ttyUSB0 --device /dev/ttyUSB1:/dev/ttyUSB1`.
