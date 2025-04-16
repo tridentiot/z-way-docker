@@ -13,7 +13,7 @@ RUN apt-get update && \
     apt-get install -qqy --no-install-recommends \
     dirmngr apt-transport-https gnupg wget lsb-release \
     ca-certificates curl \
-    wget procps iproute2 openssh-client openssh-server sudo logrotate && \
+    wget procps iproute2 openssh-client openssh-server sudo logrotate socat && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
