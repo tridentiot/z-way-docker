@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pages: write
+      id-token: write
+      attestations: write
       packages: write
     strategy:
       matrix:
@@ -52,12 +55,19 @@ jobs:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest
 
       - name: Build and push Docker image
+        id: push
         uses: docker/build-push-action@v6
         with:
-          proveance: false
           file: ./Dockerfile
           platforms: linux/${{ matrix.arch }}
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-${{ matrix.distrib }}-${{ matrix.arch }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
