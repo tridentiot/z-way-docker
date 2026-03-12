@@ -33,13 +33,10 @@ jobs:
           - aarch64
         exclude:
           - os: ubuntu-latest
-            distrib: debian-bookworm
             arch: armhf
           - os: ubuntu-24.04-arm
-            distrib: debian-bookworm
             arch: amd64
-          - os: ubuntu-24.04-arm
-            distrib: debian-bookworm
+          - os: ubuntu-latest
             arch: aarch64
     runs-on: ${{ matrix.os }}
 
