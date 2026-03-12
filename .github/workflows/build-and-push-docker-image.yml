@@ -16,7 +16,6 @@ env:
 
 jobs:
   build-and-push-image:
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       pages: write
@@ -25,12 +24,24 @@ jobs:
       packages: write
     strategy:
       matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
         distrib:
           - debian-bookworm
         arch:
           - amd64
           - armhf
           - aarch64
+        exclude:
+          - os: ubuntu-latest
+            distrib: debian-bookworm
+            arch: armhf
+          - os: ubuntu-24.04-arm
+            distrib: debian-bookworm
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            distrib: debian-bookworm
+            arch: aarch64
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
