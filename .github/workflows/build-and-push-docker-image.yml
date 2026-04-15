@@ -31,6 +31,13 @@ jobs:
           - amd64
           - armhf
           - aarch64
+        include:
+          - arch: amd64
+            platform: amd64
+          - arch: armhf
+            platform: arm/v7
+          - arch: aarch64
+            platform: arm64
         exclude:
           - os: ubuntu-latest
             arch: armhf
@@ -67,7 +74,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           file: ./Dockerfile
-          platforms: linux/${{ matrix.arch }}
+          platforms: linux/${{ matrix.platform }}
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
