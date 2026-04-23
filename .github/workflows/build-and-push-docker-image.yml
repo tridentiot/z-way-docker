@@ -24,27 +24,19 @@ jobs:
       packages: write
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm]
-        distrib:
-          - debian-bookworm
-        arch:
-          - amd64
-          - armhf
-          - aarch64
         include:
-          - arch: amd64
-            platform: amd64
-          - arch: armhf
-            platform: arm/v7
-          - arch: aarch64
-            platform: arm64
-        exclude:
           - os: ubuntu-latest
-            arch: armhf
-          - os: ubuntu-24.04-arm
+            distrib: debian-bookworm
             arch: amd64
-          - os: ubuntu-latest
+            platform: amd64
+          - os: ubuntu-24.04-arm
+            distrib: debian-bookworm
+            arch: armhf
+            platform: arm/v7
+          - os: ubuntu-24.04-arm
+            distrib: debian-bookworm
             arch: aarch64
+            platform: arm64
     runs-on: ${{ matrix.os }}
 
     steps:
